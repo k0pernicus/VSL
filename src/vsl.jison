@@ -119,34 +119,33 @@ instructions
         }
     |   instruction INDENT ( instructions )
         {
-            $$ = $1 + '\n' + $3;
+            $$ = $1 + $3;
         }
     ;
 
 instruction
     :   affect
         {
-            $$ = $1 + ';';
+            $$ = $1 + ';' + '\n';
         }
     |   iter_statement
         {
-            $$ = $1;
+            $$ = $1 + '\n';
         }
     |   if_statement
         {
-            $$ = $1;
+            $$ = $1 + '\n';
         }
     |   operations
         {
-            $$ = $1 + ';';
+            $$ = $1 + ';' + '\n';
         }
     |   stdout
         {
-            $$ = $1 + ';';
+            $$ = $1 + ';' + '\n';
         }
     |   comments
         {
-            $$ = '';
         }
     ;
 
@@ -193,11 +192,11 @@ if_statement
         }
     |   BLOCK_BEGIN PARENTHESIS_BEGIN INDENT instructions PARENTHESIS_END IF_SYMBOLE PARENTHESIS_BEGIN bool_operations PARENTHESIS_END
         {
-            $$ = 'if ' + '( ' + $8 + ' )' + ' {\n' + $4 + '\n};';
+            $$ = 'if ' + '( ' + $8 + ' )' + ' {\n' + $4 + '};';
         }
     |   BLOCK_BEGIN PARENTHESIS_BEGIN INDENT instructions PARENTHESIS_END IF_SYMBOLE PARENTHESIS_BEGIN bool_operations PARENTHESIS_END ELSE_SYMBOLE PARENTHESIS_BEGIN INDENT instructions PARENTHESIS_END
         {
-            $$ = 'if ' + '( ' + $8 + ' )' + ' {\n' + $4 + '\n}\nelse {\n' + $13 + '\n};';
+            $$ = 'if ' + '( ' + $8 + ' )' + ' {\n' + $4 + '} else {\n' + $13 + '};';
         }
     /*
         NOT SYMBOL ADDED...
@@ -208,11 +207,11 @@ if_statement
         }
     |   BLOCK_BEGIN PARENTHESIS_BEGIN INDENT instructions PARENTHESIS_END IF_SYMBOLE NOT_SYMBOLE PARENTHESIS_BEGIN bool_operations PARENTHESIS_END
         {
-            $$ = 'if (' + '!' + ' ( ' + $9 + ' ) )' + ' {\n' + $4 + '\n};';
+            $$ = 'if (' + '!' + ' ( ' + $9 + ' ) )' + ' {\n' + $4 + '};';
         }
     |   BLOCK_BEGIN PARENTHESIS_BEGIN INDENT instructions PARENTHESIS_END IF_SYMBOLE NOT_SYMBOLE PARENTHESIS_BEGIN bool_operations PARENTHESIS_END ELSE_SYMBOLE PARENTHESIS_BEGIN INDENT instructions PARENTHESIS_END
         {
-            $$ = 'if (' + '!' + ' ( ' + $9 + ' ) )' + ' {\n' + $4 + '\n}\nelse {\n' + $14 + '\n};';
+            $$ = 'if (' + '!' + ' ( ' + $9 + ' ) )' + ' {\n' + $4 + '} else {\n' + $14 + '};';
         }
     ;
 
@@ -314,6 +313,7 @@ stdout_leaves
 comments
     :   COMMENT_OPENED INDENT stdout_leaves INDENT COMMENT_CLOSED
         {
+            $$ = '';
         }
     ;
 
