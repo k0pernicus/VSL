@@ -33,7 +33,8 @@ LEXICAL GRAMMAR
 '*/'                                {return 'COMMENT_CLOSED'}
 '$'                                 {return 'END_STRING'}
 
-'init'                              {return 'INIT_SYMB'}
+'init'                              {return 'INIT_SYMBOLE'}
+'set'                               {return 'SET_SYMBOLE'}
 
 'if'                                {return 'IF_SYMBOLE'}
 'else'                              {return 'ELSE_SYMBOLE'}
@@ -136,6 +137,10 @@ instruction
         {
             $$ = $1 + '\n';
         }
+    |   modification
+        {
+            $$ = $1 + ';' + '\n';
+        }
     |   operations
         {
             $$ = $1 + ';' + '\n';
@@ -150,9 +155,14 @@ instruction
     ;
 
 affect
-    :   INIT_SYMB VAR ( operations )
+    :   INIT_SYMBOLE VAR ( operations )
         {
-            $$ = 'var ' + $2 + ' = ' + $3;
+            if (! symbols_table.hasOwnProperty($2)) {
+                symbols_table[$2] = $3;
+                $$ = 'var ' + $2 + ' = ' + $3;
+            }
+            else
+                throw "ERROR: " + $2 + " has already been initialized!!"
         }
     ;
 
@@ -212,6 +222,18 @@ if_statement
     |   BLOCK_BEGIN PARENTHESIS_BEGIN INDENT instructions PARENTHESIS_END IF_SYMBOLE NOT_SYMBOLE PARENTHESIS_BEGIN bool_operations PARENTHESIS_END ELSE_SYMBOLE PARENTHESIS_BEGIN INDENT instructions PARENTHESIS_END
         {
             $$ = 'if (' + '!' + ' ( ' + $9 + ' ) )' + ' {\n' + $4 + '} else {\n' + $14 + '};';
+        }
+    ;
+
+modification
+    :   SET_SYMBOLE VAR ( operations )
+        {
+            if (symbols_table.hasOwnProperty($2)) {
+                symbols_table[$2] = $3;
+                $$ = $2 + ' = ' + $3;
+            }
+            else
+                throw "ERROR : " + $2 + " has not been initialized...";
         }
     ;
 
@@ -331,7 +353,11 @@ leaf
         }
     |   VAR
         {
-            $$ = $1;
+            if (symbols_table.hasOwnProperty($1))
+                $$ = $1;
+            else {
+                throw "ERROR : " + $1 + " has not been initialized yet!";
+            }
         }
     ;
 
