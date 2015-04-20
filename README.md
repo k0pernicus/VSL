@@ -17,10 +17,7 @@ Fork me, I'm (not yet) famous!
         *   [Unary](#unary_ope)
         *   [Binary](#binary_ope)
     *   [Allocation](#allocation)
-    *   [Modification](#modification)
-    *   [Data structures](#data_struct)
-        *   [List](#list)
-        *   [Json](#json)
+    *   [Re-allocation](#reallocation)
     *   [Conditions](#conditions)
     *   [Loop](#loop)
 *   [Contact](#contact)
@@ -87,8 +84,11 @@ You can use these operators to make binary operations:
 *   ```//``` (integer division),
 *   ```%``` (modulo),
 *   ```=``` (equals)
+*   ```!=``` (not equals)
 *   ```<```
+*   ```<=```
 *   ```>```
+*   ```>=```
 *   ```and``` ('and' logical operator),
 *   ```or``` ('or' logical operator),
 
@@ -102,6 +102,11 @@ The right part of the allocation have to be :
 *   a *float*,
 *   a *string*,
 *   a *char*.
+
+####<a name="reallocation"></a>Re-allocation
+
+To re-allocate a variable, please to use the ```set``` keyword.  
+**Ex**: ```set x (2*3)``` will reallocate ```x``` with ```(2*3)```.
 
 ####<a name="conditions"></a>Conditions
 
