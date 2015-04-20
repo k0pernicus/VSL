@@ -29,8 +29,8 @@ LEXICAL GRAMMAR
 
 '('                                 {return 'PARENTHESIS_BEGIN'}
 ')'                                 {return 'PARENTHESIS_END'}
-'/*'                                {return 'COMMENT_OPENED'}
-'*/'                                {return 'COMMENT_CLOSED'}
+'/*'                                {return 'COMMENT_BEGIN'}
+'*/'                                {return 'COMMENT_END'}
 '$'                                 {return 'END_STRING'}
 
 'init'                              {return 'INIT_SYMBOLE'}
@@ -83,6 +83,7 @@ PRECEDENCE
 %left 'PLUS_OPE' 'MINUS_OPE'
 %left 'INT_DIV_OPE' 'SIMPLE_DIV_OPE' 'MUL_OPE'
 %left 'MODULO_OPE'
+%left 'PARENTHESIS_BEGIN' 'PARENTHESIS_END' 'COMMENT_BEGIN' 'COMMENT_END'
 
 /*
 EXPRESSIONS
@@ -333,7 +334,7 @@ stdout_leaves
     ;
 
 comments
-    :   COMMENT_OPENED INDENT stdout_leaves INDENT COMMENT_CLOSED
+    :   COMMENT_BEGIN INDENT stdout_leaves INDENT COMMENT_END
         {
             $$ = '';
         }
