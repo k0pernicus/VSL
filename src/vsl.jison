@@ -60,8 +60,11 @@ LEXICAL GRAMMAR
 
 'not'                               {return 'NOT_SYMBOLE'}
 '<'                                 {return 'INF_BOPE'}
+'<='                                {return 'INFE_BOPE'}
 '>'                                 {return 'SUP_BOPE'}
+'>='                                {return 'SUPE_BOPE'}
 '='                                 {return 'EQUALS_BOPE'}
+'!='                                {return 'NEQUALS_BOPE'}
 'and'                               {return 'AND_BOPE'}
 'or'                                {return 'OR_BOPE'}
 
@@ -293,9 +296,17 @@ bool_operation
         {
             $$ = $1 + ' < ' + $3;
         }
+    |   operations INFE_BOPE ( operations )
+        {
+            $$ = $1 + ' <= ' + $3;
+        }
     |   operations SUP_BOPE ( operations )
         {
             $$ = $1 + ' > ' + $3;
+        }
+    |   operations SUPE_BOPE ( operations )
+        {
+            $$ = $1 + ' >= ' + $3;
         }
     |   operations EQUALS_BOPE ( operations )
         {
