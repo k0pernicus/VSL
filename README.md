@@ -20,6 +20,7 @@ Fork me, I'm (not yet) famous!
     *   [Re-allocation](#reallocation)
     *   [Conditions](#conditions)
     *   [Loop](#loop)
+    *   [Functions](#functions)
 *   [Contact](#contact)
 
 ##<a name="simple_intro"></a>What? How? Who? Where? When?
