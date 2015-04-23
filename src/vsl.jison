@@ -8,6 +8,8 @@ Back-end is JavaScript!
 
 %{
     var symbols_table = {};
+    var symbols_fn = {};
+    var is_fn = false;
 %}
 
 /*
@@ -244,21 +246,25 @@ function
     */
     :   FUNCTION_SYMBOLE VAR PARENTHESIS_BEGIN INDENT instructions PARENTHESIS_END
         {
+            is_fn = true;
             $$ = 'function ' + $2 + ' () {\n' + $5 + '}';
+            is_fn = false;
         }
     /*
         With parameters
     */
     |   FUNCTION_SYMBOLE VAR var_leaves PARENTHESIS_BEGIN INDENT instructions PARENTHESIS_END
         {
+            is_fn = true;
             $$ = 'function ' + $2 + ' ( ' + $3 + ' ) {\n' + $6 + '}';
+            is_fn = false;
         }
     ;
 
 modification
     :   SET_SYMBOLE VAR ( operations )
         {
-            if (symbols_table.hasOwnProperty($2)) {
+            if (symbols_table.hasOwnProperty($2) && !is_fn) {
                 symbols_table[$2] = $3;
                 $$ = $2 + ' = ' + $3;
             }
@@ -373,11 +379,23 @@ stdout_leaves
 var_leaves
     :   VAR
         {
-            $$ = $1;
+            if (symbols_fn.hasOwnProperty($1)) {
+                throw "ERROR: " + $1 + " has already been declared in the function!"
+            }
+            else {
+                symbols_fn[$1] = false;
+                $$ = $1;
+            }
         }
     |   VAR ( VAR )
         {
-            $$ = $1 + ', ' + $2;
+            if (symbols_fn.hasOwnProperty($1)) {
+                throw "ERROR: " + $1 + " has already been declared in the function!"
+            }
+            else {
+                symbols_fn[$1] = false;
+                $$ = $1 + ', ' + $2;
+            }
         }
     ;
 
@@ -417,10 +435,26 @@ leaf
         }
     |   VAR
         {
-            if (symbols_table.hasOwnProperty($1))
+            /*
+            No function
+            */
+            if (symbols_table.hasOwnProperty($1) && !is_fn)
                 $$ = $1;
             else {
-                throw "ERROR : " + $1 + " has not been initialized yet!";
+                if (!is_fn)
+                    throw "ERROR : " + $1 + " has not been initialized yet!";
+                else {
+                    /*
+                    Function
+                    */
+                    if (is_fn && symbols_fn.hasOwnProperty($1)) {
+                        if (!symbols_fn[$1])
+                            symbols_fn[$1] = true
+                        $$ = $1;
+                    }
+                    else
+                        throw "ERROR : " + $1 + " has not been initialized as parameter!";
+                }
             }
         }
     ;
