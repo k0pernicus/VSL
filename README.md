@@ -182,6 +182,16 @@ fn add y z (
 )
 ```
 
+Usage:  
+
+```
+fn printHelloWorld (
+    out "Hello world" $
+)
+
+do printHelloWorld() for x in 0..2
+```
+
 There is no ```return``` instruction yet (soon!).
 
 ##<a name="contact"></a>Contact
