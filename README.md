@@ -161,6 +161,27 @@ do (
 ) for x in 2..0
 ```
 
+####<a name="functions"></a>Functions
+
+Functions are actually in beta-test!!!  
+You can use simple functions without parameters, or with unlimited parameters...
+
+```
+fn x (
+    out "Hello world" $
+)
+```
+
+or
+
+```
+fn add y z (
+    out (y + z) $
+)
+```
+
+There is no ```return``` instruction yet (soon!).
+
 ##<a name="contact"></a>Contact
 
 Carette Antonin - antonin[dot]carette[at]gmail[dot]com
