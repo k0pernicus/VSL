@@ -47,6 +47,8 @@ LEXICAL GRAMMAR
 'for'                               {return 'ITER_SYMBOLE'}
 'out'                               {return 'STDOUT_BEGIN'}
 
+'fn'                                {return 'FUNCTION_SYMBOLE'}
+
 /*
     Operators
 */
@@ -144,6 +146,10 @@ instruction
         {
             $$ = $1 + '\n';
         }
+    |   function
+        {
+            $$ = '\n' + $1 + '\n\n';
+        }
     |   modification
         {
             $$ = $1 + ';' + '\n';
@@ -229,6 +235,23 @@ if_statement
     |   BLOCK_BEGIN PARENTHESIS_BEGIN INDENT instructions PARENTHESIS_END IF_SYMBOLE NOT_SYMBOLE PARENTHESIS_BEGIN bool_operations PARENTHESIS_END ELSE_SYMBOLE PARENTHESIS_BEGIN INDENT instructions PARENTHESIS_END
         {
             $$ = 'if (' + '!' + ' ( ' + $9 + ' ) )' + ' {\n' + $4 + '} else {\n' + $14 + '};';
+        }
+    ;
+
+function
+    /*
+        Without parameter
+    */
+    :   FUNCTION_SYMBOLE VAR PARENTHESIS_BEGIN INDENT instructions PARENTHESIS_END
+        {
+            $$ = 'function ' + $2 + ' () {\n' + $5 + '}';
+        }
+    /*
+        With parameters
+    */
+    |   FUNCTION_SYMBOLE VAR var_leaves PARENTHESIS_BEGIN INDENT instructions PARENTHESIS_END
+        {
+            $$ = 'function ' + $2 + ' ( ' + $3 + ' ) {\n' + $6 + '}';
         }
     ;
 
@@ -347,6 +370,17 @@ stdout_leaves
         }
     ;
 
+var_leaves
+    :   VAR
+        {
+            $$ = $1;
+        }
+    |   VAR ( VAR )
+        {
+            $$ = $1 + ', ' + $2;
+        }
+    ;
+
 comments
     :   COMMENT_BEGIN INDENT stdout_leaves INDENT COMMENT_END
         {
@@ -359,12 +393,27 @@ final_state
         {
             $$ = $1;
         }
+        /*
+        Only for parameters call (in a function...)
+        */
+    |   leaf ( final_state )
+        {
+            $$ = $1 + ', ' + $2;
+        }
     ;
 
 leaf
     :   DIGITAL
         {
             $$ = $1;
+        }
+    |   VAR PARENTHESIS_BEGIN final_state PARENTHESIS_END
+        {
+            $$ = $1 + '( ' + $3 + ' )';
+        }
+    |   VAR PARENTHESIS_BEGIN PARENTHESIS_END
+        {
+            $$ = $1 + '()';
         }
     |   VAR
         {
