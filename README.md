@@ -163,7 +163,7 @@ do (
 
 ####<a name="functions"></a>Functions
 
-Functions are actually in beta-test!!!  
+**Functions are actually in alpha-test!!!**  
 You can use simple functions without parameters, or with unlimited parameters...
 
 ```
