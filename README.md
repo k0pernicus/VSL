@@ -60,6 +60,7 @@ This is the list of reserved names:
 *   ```else```,
 *   ```do```,
 *   ```for```,
+*   ```fn```,
 *   ```out```,
 *   ```..```.
 
