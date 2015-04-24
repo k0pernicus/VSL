@@ -77,7 +77,7 @@ LEXICAL GRAMMAR
 
 ^[a-z]([a-zA-Z0-9_?])*              {return 'VAR'}
 
-\"[ :!?0-9a-zA-Zçàù<>.]*\"          {return 'STRING'}
+\".*\"          {return 'STRING'}
 
 <<EOF>>                             {return 'EOF'}
 
@@ -431,7 +431,7 @@ var_leaves
     ;
 
 comments
-    :   COMMENT_BEGIN INDENT stdout_leaves INDENT COMMENT_END
+    :   COMMENT_BEGIN INDENT STRING INDENT COMMENT_END
         {
             $$ = '';
         }
