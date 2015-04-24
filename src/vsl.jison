@@ -9,6 +9,7 @@ Back-end is JavaScript!
 %{
     var symbols_table = {};
     var symbols_fn = {};
+    var current_fn = "";
     var is_fn = false;
 %}
 
@@ -49,7 +50,7 @@ LEXICAL GRAMMAR
 'for'                               {return 'ITER_SYMBOLE'}
 'out'                               {return 'STDOUT_BEGIN'}
 
-'fn'                                {return 'FUNCTION_SYMBOLE'}
+'fn'                                {is_fn = true; return 'FUNCTION_SYMBOLE'}
 
 /*
     Operators
@@ -172,12 +173,21 @@ instruction
 affect
     :   INIT_SYMBOLE VAR ( operations )
         {
-            if (! symbols_table.hasOwnProperty($2)) {
-                symbols_table[$2] = $3;
-                $$ = 'var ' + $2 + ' = ' + $3;
+            if (!is_fn) {
+                if (!symbols_table.hasOwnProperty($2)) {
+                    symbols_table[$2] = $3;
+                }
+                else
+                    throw "ERROR: " + $2 + " has already been initialized!!"
             }
-            else
-                throw "ERROR: " + $2 + " has already been initialized!!"
+            else {
+                if (!symbols_fn[current_fn]['global_var'].hasOwnProperty($2) && !symbols_fn[current_fn]['parameters'].hasOwnProperty($2)) {
+                    symbols_fn[current_fn]['global_var'][$2] = $3;
+                }
+                else
+                    throw "ERROR: " + $2 + " has already been initialized in the function!!"
+            }
+            $$ = 'var ' + $2 + ' = ' + $3;
         }
     ;
 
@@ -244,20 +254,26 @@ function
     /*
         Without parameter
     */
-    :   FUNCTION_SYMBOLE VAR PARENTHESIS_BEGIN INDENT instructions PARENTHESIS_END
+    :   FUNCTION_SYMBOLE fn_id PARENTHESIS_BEGIN INDENT instructions PARENTHESIS_END
         {
-            is_fn = true;
             $$ = 'function ' + $2 + ' () {\n' + $5 + '}';
             is_fn = false;
+            /*
+                Name of the current function is now null
+            */
+            current_fn = "";
         }
     /*
         With parameters
     */
-    |   FUNCTION_SYMBOLE VAR var_leaves PARENTHESIS_BEGIN INDENT instructions PARENTHESIS_END
+    |   FUNCTION_SYMBOLE fn_id var_leaves PARENTHESIS_BEGIN INDENT instructions PARENTHESIS_END
         {
-            is_fn = true;
             $$ = 'function ' + $2 + ' ( ' + $3 + ' ) {\n' + $6 + '}';
             is_fn = false;
+            /*
+                Name of the current function is now null
+            */
+            current_fn = "";
         }
     ;
 
@@ -376,24 +392,39 @@ stdout_leaves
         }
     ;
 
+fn_id
+    :   VAR
+        {
+            if (current_fn == "") {
+                current_fn = $1;
+                symbols_fn[current_fn] = {};
+                symbols_fn[current_fn]['global_var'] = {};
+                symbols_fn[current_fn]['parameters'] = {};
+            }
+            else {
+                throw "ERROR: you can't declare a function in a function!"
+            }
+        }
+    ;
+
 var_leaves
     :   VAR
         {
-            if (symbols_fn.hasOwnProperty($1)) {
+            if (symbols_fn[current_fn]['parameters'].hasOwnProperty($1)) {
                 throw "ERROR: " + $1 + " has already been declared in the function!"
             }
             else {
-                symbols_fn[$1] = false;
+                symbols_fn[current_fn]['parameters'][$1] = false;
                 $$ = $1;
             }
         }
     |   VAR ( VAR )
         {
-            if (symbols_fn.hasOwnProperty($1)) {
+            if (symbols_fn[current_fn]['parameters'].hasOwnProperty($1)) {
                 throw "ERROR: " + $1 + " has already been declared in the function!"
             }
             else {
-                symbols_fn[$1] = false;
+                symbols_fn[current_fn]['parameters'][$1] = false;
                 $$ = $1 + ', ' + $2;
             }
         }
@@ -438,23 +469,20 @@ leaf
             /*
             No function
             */
-            if (symbols_table.hasOwnProperty($1) && !is_fn)
-                $$ = $1;
-            else {
-                if (!is_fn)
+            if (!is_fn) {
+                if (symbols_table.hasOwnProperty($1))
+                    $$ = $1;
+                else
                     throw "ERROR : " + $1 + " has not been initialized yet!";
-                else {
-                    /*
-                    Function
-                    */
-                    if (is_fn && symbols_fn.hasOwnProperty($1)) {
-                        if (!symbols_fn[$1])
-                            symbols_fn[$1] = true
-                        $$ = $1;
-                    }
-                    else
-                        throw "ERROR : " + $1 + " has not been initialized as parameter!";
-                }
+            }
+            else {
+                /*
+                Function
+                */
+                if (symbols_fn[current_fn]['global_var'].hasOwnProperty($1) || symbols_fn[current_fn]['parameters'].hasOwnProperty($1))
+                        symbols_fn[current_fn]['global_var'][$1] = true
+                else
+                    throw "ERROR : " + $1 + " has not been initialized as parameter!";
             }
         }
     ;
