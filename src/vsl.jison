@@ -7,9 +7,21 @@ Back-end is JavaScript!
 */
 
 %{
+    /*
+    Symbols table (contains all global variables)
+    */
     var symbols_table = {};
+    /*
+    Functions tables (contains all functions - parameters and global variables)
+    */
     var symbols_fn = {};
+    /*
+    String which contains the name of the current function
+    */
     var current_fn = "";
+    /*
+    Boolean to know if we are in a function or not - simply to know which variable to get (function or global)
+    */
     var is_fn = false;
 %}
 
