@@ -441,7 +441,7 @@ var_leaves
                 $$ = $1;
             }
         }
-    |   VAR ( VAR )
+    |   VAR ( var_leaves )
         {
             if (symbols_fn[current_fn]['parameters'].hasOwnProperty($1)) {
                 throw "ERROR: " + $1 + " has already been declared in the function!"
