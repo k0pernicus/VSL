@@ -185,9 +185,30 @@ fn add y z (
 Usage:  
 
 ```
+
+init z 1
+
+/*
+    "Declare a simple function"
+*/
+
 fn printHelloWorld (
+    /*
+        "z is here a local variable"
+    */
+    init z 3
     out "Hello world" $
+    set z 4
+    /*
+        "out 4"
+    */
+    out "z: " z $
 )
+
+/*
+    "out the global variable z (1)"
+*/
+out z $
 
 do printHelloWorld() for x in 0..2
 ```
