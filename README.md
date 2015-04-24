@@ -145,7 +145,7 @@ You can use these notations to use simple conditions :
 
 ####<a name="loops"></a>Loop
 
-**WARNING: Functions are actually in alpha-test!!!**
+**WARNING: Loops are currently in alpha-test!!!**
 There is a single loop in VSL.
 
 ```
@@ -179,7 +179,7 @@ do add(x x) for x in 0..2
 
 ####<a name="functions"></a>Functions
 
-**WARNING: Functions are actually in alpha-test!!!**  
+**WARNING: Functions are currently in alpha-test!!!**  
 You can use simple functions without parameters, or with unlimited parameters...
 
 ```
