@@ -280,12 +280,23 @@ function
 modification
     :   SET_SYMBOLE VAR ( operations )
         {
-            if (symbols_table.hasOwnProperty($2) && !is_fn) {
-                symbols_table[$2] = $3;
-                $$ = $2 + ' = ' + $3;
+            if (!is_fn) {
+                if (symbols_table.hasOwnProperty($2)) {
+                    symbols_table[$2] = $3;
+                    $$ = $2 + ' = ' + $3;
+                }
             }
-            else
-                throw "ERROR : " + $2 + " has not been initialized...";
+            else {
+                if (symbols_fn[current_fn]['global_var'].hasOwnProperty($2)) {
+                    $$ = $2 + ' = ' + $3;
+                }
+                else {
+                    if (symbols_fn[current_fn]['parameters'].hasOwnProperty($2))
+                        throw "ERROR : You canno't modify the parameter " + $2 + " !";
+                    else
+                        throw "ERROR : " + $2 + " has not been initialized...";
+                }
+            }
         }
     ;
 
