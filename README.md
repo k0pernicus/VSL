@@ -145,6 +145,7 @@ You can use these notations to use simple conditions :
 
 ####<a name="loops"></a>Loop
 
+**WARNING: Functions are actually in alpha-test!!!**
 There is a single loop in VSL.
 
 ```
@@ -161,6 +162,19 @@ To call an decremental loop, use:
 do (
     out "Hello world" $
 ) for x in 2..0
+```
+
+If you want to use the variable declared, please to initialize it before the usage!
+
+```
+fn add x y (
+    init rst x + y
+    out rst $
+)
+
+init z 0
+
+do add(x x) for x in 0..2
 ```
 
 ####<a name="functions"></a>Functions
