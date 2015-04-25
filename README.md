@@ -147,7 +147,7 @@ You can use these notations to use simple conditions :
 
 ####<a name="loops"></a>Loop
 
-**WARNING: Loops are currently in alpha-test!!!**
+**WARNING: Loops are currently in alpha-test!!!**  
 There is a single loop in VSL.
 
 ```
