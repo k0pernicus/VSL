@@ -173,9 +173,11 @@ fn add x y (
     out rst
 )
 
-init z 0
+init z 2
 
-do add(x x) for x in 0..2
+init x 0
+
+do add(x x) for x in 0..z
 ```
 
 ####<a name="functions"></a>Functions
