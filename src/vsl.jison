@@ -390,7 +390,7 @@ bool_operation
     ;
 
 stdout
-    :   STDOUT_BEGIN stdout_leaves END_STRING
+    :   STDOUT_BEGIN stdout_leaves
         {
             $$ = 'console.log' + '( ' + $2 + ' )';
         }
