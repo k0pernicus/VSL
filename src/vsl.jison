@@ -56,7 +56,7 @@ LEXICAL GRAMMAR
 
 'do'                                {return 'BLOCK_BEGIN'}
 
-[0-9]+".."[0-9]+                    {return 'ITER_NBR'}
+(^[a-z]([a-zA-Z0-9_?])*|[0-9]+)".."(^[a-z]([a-zA-Z0-9_?])*|[0-9]+)                    {return 'ITER_NBR'}
 
 'in'                                {return 'ITER_IN'}
 'for'                               {return 'ITER_SYMBOLE'}
