@@ -89,7 +89,7 @@ LEXICAL GRAMMAR
 
 ^[a-z]([a-zA-Z0-9_?])*              {return 'VAR'}
 
-\".*\"          {return 'STRING'}
+\"[^\"]+\"          {return 'STRING'}
 
 <<EOF>>                             {return 'EOF'}
 
