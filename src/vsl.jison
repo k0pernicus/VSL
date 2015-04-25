@@ -219,9 +219,9 @@ iter_statement
         }
     |   BLOCK_BEGIN PARENTHESIS_BEGIN INDENT instructions PARENTHESIS_END ITER_SYMBOLE VAR ITER_IN ITER_NBR
         {
-            var iter_nbr = $6;
-            var first_nbr = get_first_nbr($6);
-            var last_nbr = get_last_nbr($6);
+            var iter_nbr = $9;
+            var first_nbr = get_first_nbr($9);
+            var last_nbr = get_last_nbr($9);
             if (first_nbr <= last_nbr) {
                 var iter = "++";
             }
