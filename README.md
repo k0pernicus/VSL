@@ -54,7 +54,6 @@ Secondly, indentation is very important to respect some obligations with loops o
 VSL distringuished *allocation* and *modification* of variables.
 
 This is the list of reserved names:
-*   ```$```,
 *   ```ìf```,
 *   ```init```,
 *   ```else```,
@@ -65,6 +64,8 @@ This is the list of reserved names:
 *   ```..```.
 
 Comments are delimited between ```/*``` and ```*/```. In comments, you **must** write it between double-quotes!  
+
+To print out a simple string, use ```out``` like ```out "x: " x```
 
 To finish, priority is given by ```(...)```.
 
@@ -118,7 +119,7 @@ You can use these notations to use simple conditions :
 
     ```
     init x 3
-    do out "x < 4" $ if (x < 4)
+    do out "x < 4" if (x < 4)
     ```
 
     *OR*
@@ -126,8 +127,8 @@ You can use these notations to use simple conditions :
     ```
     init x 3
     do (
-        out "hi guy!" $
-        out "x < 4" $
+        out "hi guy!"
+        out "x < 4"
     ) if (x < 4)
     ```
 
@@ -136,10 +137,10 @@ You can use these notations to use simple conditions :
     ```
     init x 3
     do (
-        out "hi guy!" $
-        out "x < 4" $
+        out "hi guy!"
+        out "x < 4"
     ) if (x < 4) else (
-        out "x > 4" $
+        out "x > 4"
     )
     ```
 
@@ -150,7 +151,7 @@ There is a single loop in VSL.
 
 ```
 do (
-    out "Hello world" $
+    out "Hello world"
 ) for x in 0..2
 ```
 
@@ -160,7 +161,7 @@ To call an decremental loop, use:
 
 ```
 do (
-    out "Hello world" $
+    out "Hello world"
 ) for x in 2..0
 ```
 
@@ -169,7 +170,7 @@ If you want to use the variable declared, please to initialize it before the usa
 ```
 fn add x y (
     init rst x + y
-    out rst $
+    out rst
 )
 
 init z 0
@@ -184,7 +185,7 @@ You can use simple functions without parameters, or with unlimited parameters...
 
 ```
 fn x (
-    out "Hello world" $
+    out "Hello world"
 )
 ```
 
@@ -192,7 +193,7 @@ or
 
 ```
 fn add y z (
-    out (y + z) $
+    out (y + z)
 )
 ```
 
@@ -211,18 +212,18 @@ fn printHelloWorld (
         "z is here a local variable"
     */
     init z 3
-    out "Hello world" $
+    out "Hello world"
     set z 4
     /*
         "out 4"
     */
-    out "z: " z $
+    out "z: " z
 )
 
 /*
     "out the global variable z (1)"
 */
-out z $
+out z
 
 do printHelloWorld() for x in 0..2
 ```
