@@ -21,6 +21,7 @@ Fork me, I'm (not yet) famous!
     *   [Conditions](#conditions)
     *   [Loop](#loop)
     *   [Functions](#functions)
+*   [Examples](#examples)
 *   [Contact](#contact)
 
 ##<a name="simple_intro"></a>What? How? Who? Where? When?
@@ -231,6 +232,65 @@ do printHelloWorld() for x in 0..2
 ```
 
 There is no ```return``` instruction yet (soon!).
+
+##<a name="examples"></a>Examples
+
+* Hello world
+
+```
+out "Hello world"
+```
+
+or
+
+```
+fn printHelloWorld (
+  out "Hello world"
+)
+
+printHelloWorld()
+```
+
+* Multiplication table
+
+```
+fn mul a (
+    out "--------------------"
+    out "mul " a
+    init x 0
+    do (
+        init rst a * x
+        out  a " * " x " = " rst
+    ) for x in 0..10
+)
+
+init x 1
+do (
+  mul(x)
+) for x in 1..10
+```
+
+* Fibonacci
+
+This example will print out the 100 first Fibonacci decimals.
+
+```
+fn fibo limit (
+  init x 1
+  init y 1
+
+  out x "\n" y
+
+  do (
+    init rst (x + y)
+    set x y
+    set y rst
+    out rst
+  ) for a in 0..limit
+)
+
+fibo(100)
+```
 
 ##<a name="contact"></a>Contact
 
