@@ -175,10 +175,10 @@ do (
 If you want to use the variable declared, please to initialize it before the usage!
 
 ```
-fn add x y (
+fn add x y begin
     init rst x + y
     out rst
-)
+end
 
 init z 2
 
@@ -201,9 +201,9 @@ end
 or
 
 ```
-fn add y z (
+fn add y z begin
     out (y + z)
-)
+end
 ```
 
 Usage:  
@@ -250,9 +250,9 @@ out "Hello world"
 or
 
 ```
-fn printHelloWorld (
+fn printHelloWorld begin
   out "Hello world"
-)
+end
 
 printHelloWorld()
 ```
@@ -260,7 +260,7 @@ printHelloWorld()
 * Multiplication table
 
 ```
-fn mul a (
+fn mul a begin
     out "--------------------"
     out "mul " a
     init x 0
@@ -268,7 +268,7 @@ fn mul a (
         init rst (a * x)
         out  a " * " x " = " rst
     ) for x in 0..10
-)
+end
 
 init x 1
 do (
