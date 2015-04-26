@@ -57,7 +57,7 @@ LEXICAL GRAMMAR
 
 'do'                                {return 'BLOCK_BEGIN'}
 
-(^[a-z]([a-zA-Z0-9_?])*|[0-9]+)".."(^[a-z]([a-zA-Z0-9_?])*|[0-9]+)                    {return 'ITER_NBR'}
+([a-z]([a-zA-Z0-9_?])*|[0-9]+)".."([a-z]([a-zA-Z0-9_?])*|[0-9]+)                    {return 'ITER_NBR'}
 
 'in'                                {return 'ITER_IN'}
 'for'                               {return 'ITER_SYMBOLE'}
@@ -187,7 +187,7 @@ affect
     :   INIT_SYMBOLE affect_var ( operations )
         {
             list_var = $2;
-            list_var = list_var.split(',');
+            list_var = list_var.split(' = ');
             if (!is_fn) {
                 for (var i = 0; i < list_var.length; i++) {
                     var actual_var = list_var[i];
@@ -302,7 +302,7 @@ modification
     :   SET_SYMBOLE affect_var ( operations )
         {
             list_var = $2;
-            list_var = list_var.split(',');
+            list_var = list_var.split(' = ');
             if (!is_fn) {
                 for (var i = 0; i < list_var.length; i++) {
                     var actual_var = list_var[i];
