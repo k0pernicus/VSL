@@ -42,8 +42,10 @@ LEXICAL GRAMMAR
     Reserved names
 */
 
-('('|'begin')                       {return 'PARENTHESIS_BEGIN'}
-(')'|'end')                         {return 'PARENTHESIS_END'}
+'('                                 {return 'PARENTHESIS_BEGIN'}
+')'                                 {return 'PARENTHESIS_END'}
+('('|'begin')                       {return 'BLOCK_BEGIN'}
+(')'|'end')                         {return 'BLOCK_END'}
 '/*'                                {return 'COMMENT_BEGIN'}
 '*/'                                {return 'COMMENT_END'}
 ','                                 {return 'COMMA'}
@@ -106,7 +108,7 @@ PRECEDENCE
 %left 'PLUS_OPE' 'MINUS_OPE'
 %left 'INT_DIV_OPE' 'SIMPLE_DIV_OPE' 'MUL_OPE'
 %left 'MODULO_OPE'
-%left 'PARENTHESIS_BEGIN' 'PARENTHESIS_END' 'COMMENT_BEGIN' 'COMMENT_END'
+%left 'PARENTHESIS_BEGIN' 'PARENTHESIS_END' 'BLOCK_BEGIN' 'BLOCK_END' 'COMMENT_BEGIN' 'COMMENT_END'
 
 /*
 EXPRESSIONS
@@ -274,7 +276,7 @@ function
     /*
         Without parameter
     */
-    :   FUNCTION_SYMBOLE fn_id PARENTHESIS_BEGIN INDENT instructions PARENTHESIS_END
+    :   FUNCTION_SYMBOLE fn_id BLOCK_BEGIN INDENT instructions BLOCK_END
         {
             $$ = 'function ' + $2 + ' () {\n' + $5 + '}';
             is_fn = false;
@@ -286,7 +288,7 @@ function
     /*
         With parameters
     */
-    |   FUNCTION_SYMBOLE fn_id var_leaves PARENTHESIS_BEGIN INDENT instructions PARENTHESIS_END
+    |   FUNCTION_SYMBOLE fn_id var_leaves BLOCK_BEGIN INDENT instructions BLOCK_END
         {
             $$ = 'function ' + $2 + ' ( ' + $3 + ' ) {\n' + $6 + '}';
             is_fn = false;
