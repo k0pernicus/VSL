@@ -100,6 +100,7 @@ You can use these operators to make binary operations:
 
 To allocate a variable, please to use the ```init``` keyword.  
 **Ex**: ```init x 9``` will declared ```x``` and initialize it with ```9```.
+**Ex2**: ```init x, y 1``` will declared ```x``` and ```y``` and initialize them with ```1```.
 
 The right part of the allocation have to be :
 *   an *integer*,
@@ -111,6 +112,7 @@ The right part of the allocation have to be :
 
 To re-allocate a variable, please to use the ```set``` keyword.  
 **Ex**: ```set x (2*3)``` will reallocate ```x``` with ```(2*3)```.
+**Ex2**: ```set x, y (2*3)``` will reallocate ```x``` and ```y``` with ```(2*3)```.
 
 ####<a name="conditions"></a>Conditions
 
