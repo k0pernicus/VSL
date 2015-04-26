@@ -42,11 +42,10 @@ LEXICAL GRAMMAR
     Reserved names
 */
 
-'('                                 {return 'PARENTHESIS_BEGIN'}
-')'                                 {return 'PARENTHESIS_END'}
+('('|'begin')                       {return 'PARENTHESIS_BEGIN'}
+(')'|'end')                         {return 'PARENTHESIS_END'}
 '/*'                                {return 'COMMENT_BEGIN'}
 '*/'                                {return 'COMMENT_END'}
-'$'                                 {return 'END_STRING'}
 ','                                 {return 'COMMA'}
 
 'init'                              {return 'INIT_SYMBOLE'}
