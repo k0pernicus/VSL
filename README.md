@@ -68,7 +68,7 @@ Comments are delimited between ```/*``` and ```*/```. In comments, you **must** 
 
 To print out a simple string, use ```out``` like ```out "x: " x```
 
-To finish, priority is given by ```(...)```.
+To finish, priority is given by ```(...)```; blocks are created by ```(``` and ```)```, or **```begin``` and ```end``` for functions only**.
 
 ####<a name="operators"></a>Operators
 
@@ -189,9 +189,9 @@ do add(x x) for x in 0..z
 You can use simple functions without parameters, or with unlimited parameters...
 
 ```
-fn x (
+fn x begin
     out "Hello world"
-)
+end
 ```
 
 or
@@ -212,7 +212,7 @@ init z 1
     "Declare a simple function"
 */
 
-fn printHelloWorld (
+fn printHelloWorld begin
     /*
         "z is here a local variable"
     */
@@ -223,7 +223,7 @@ fn printHelloWorld (
         "out 4"
     */
     out "z: " z
-)
+end
 
 /*
     "out the global variable z (1)"
