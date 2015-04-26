@@ -54,7 +54,7 @@ LEXICAL GRAMMAR
 'if'                                {return 'IF_SYMBOLE'}
 'else'                              {return 'ELSE_SYMBOLE'}
 
-'do'                                {return 'BLOCK_BEGIN'}
+'do'                                {return 'DO_SYMB'}
 
 ([a-z]([a-zA-Z0-9_?])*|[0-9]+)".."([a-z]([a-zA-Z0-9_?])*|[0-9]+)                    {return 'ITER_NBR'}
 
@@ -99,7 +99,7 @@ LEXICAL GRAMMAR
 PRECEDENCE
 */
 
-%left 'IF_SYMBOLE' 'ELSE_SYMBOLE' 'BLOCK_BEGIN'
+%left 'IF_SYMBOLE' 'ELSE_SYMBOLE' 'DO_SYMB'
 %left 'NOT_SYMBOLE'
 %left 'AND_BOPE' 'OR_BOPE'
 %left 'INF_BOPE' 'SUP_BOPE' 'EQUALS_BOPE'
@@ -212,7 +212,7 @@ affect
     ;
 
 iter_statement
-    :   BLOCK_BEGIN instruction ITER_SYMBOLE VAR ITER_IN ITER_NBR
+    :   DO_SYMB instruction ITER_SYMBOLE VAR ITER_IN ITER_NBR
         {
             var iter_nbr = $6;
             var first_nbr = get_first_nbr($6);
@@ -225,7 +225,7 @@ iter_statement
             }
             $$ = 'for ' + '( ' + 'var ' + $4 + ' = ' + first_nbr + ' ; ' + $4 + ' < ' + last_nbr + ' ; ' + $4 + iter + ' )' + '\n' + $2;
         }
-    |   BLOCK_BEGIN PARENTHESIS_BEGIN INDENT instructions PARENTHESIS_END ITER_SYMBOLE VAR ITER_IN ITER_NBR
+    |   DO_SYMB PARENTHESIS_BEGIN INDENT instructions PARENTHESIS_END ITER_SYMBOLE VAR ITER_IN ITER_NBR
         {
             var iter_nbr = $9;
             var first_nbr = get_first_nbr($9);
@@ -241,30 +241,30 @@ iter_statement
     ;
 
 if_statement
-    :   BLOCK_BEGIN instruction IF_SYMBOLE PARENTHESIS_BEGIN bool_operations PARENTHESIS_END
+    :   DO_SYMB instruction IF_SYMBOLE PARENTHESIS_BEGIN bool_operations PARENTHESIS_END
         {
             $$ = 'if ' + '( ' + $5 + ' )' + '\n' + $2;
         }
-    |   BLOCK_BEGIN PARENTHESIS_BEGIN INDENT instructions PARENTHESIS_END IF_SYMBOLE PARENTHESIS_BEGIN bool_operations PARENTHESIS_END
+    |   DO_SYMB PARENTHESIS_BEGIN INDENT instructions PARENTHESIS_END IF_SYMBOLE PARENTHESIS_BEGIN bool_operations PARENTHESIS_END
         {
             $$ = 'if ' + '( ' + $8 + ' )' + ' {\n' + $4 + '};';
         }
-    |   BLOCK_BEGIN PARENTHESIS_BEGIN INDENT instructions PARENTHESIS_END IF_SYMBOLE PARENTHESIS_BEGIN bool_operations PARENTHESIS_END ELSE_SYMBOLE PARENTHESIS_BEGIN INDENT instructions PARENTHESIS_END
+    |   DO_SYMB PARENTHESIS_BEGIN INDENT instructions PARENTHESIS_END IF_SYMBOLE PARENTHESIS_BEGIN bool_operations PARENTHESIS_END ELSE_SYMBOLE PARENTHESIS_BEGIN INDENT instructions PARENTHESIS_END
         {
             $$ = 'if ' + '( ' + $8 + ' )' + ' {\n' + $4 + '} else {\n' + $13 + '};';
         }
     /*
         NOT SYMBOL ADDED...
     */
-    |   BLOCK_BEGIN instruction IF_SYMBOLE NOT_SYMBOLE PARENTHESIS_BEGIN bool_operations PARENTHESIS_END
+    |   DO_SYMB instruction IF_SYMBOLE NOT_SYMBOLE PARENTHESIS_BEGIN bool_operations PARENTHESIS_END
         {
             $$ = 'if (' + $4 + ' ( ' + $6 + ' ) )' + '\n' + $2;
         }
-    |   BLOCK_BEGIN PARENTHESIS_BEGIN INDENT instructions PARENTHESIS_END IF_SYMBOLE NOT_SYMBOLE PARENTHESIS_BEGIN bool_operations PARENTHESIS_END
+    |   DO_SYMB PARENTHESIS_BEGIN INDENT instructions PARENTHESIS_END IF_SYMBOLE NOT_SYMBOLE PARENTHESIS_BEGIN bool_operations PARENTHESIS_END
         {
             $$ = 'if (' + '!' + ' ( ' + $9 + ' ) )' + ' {\n' + $4 + '};';
         }
-    |   BLOCK_BEGIN PARENTHESIS_BEGIN INDENT instructions PARENTHESIS_END IF_SYMBOLE NOT_SYMBOLE PARENTHESIS_BEGIN bool_operations PARENTHESIS_END ELSE_SYMBOLE PARENTHESIS_BEGIN INDENT instructions PARENTHESIS_END
+    |   DO_SYMB PARENTHESIS_BEGIN INDENT instructions PARENTHESIS_END IF_SYMBOLE NOT_SYMBOLE PARENTHESIS_BEGIN bool_operations PARENTHESIS_END ELSE_SYMBOLE PARENTHESIS_BEGIN INDENT instructions PARENTHESIS_END
         {
             $$ = 'if (' + '!' + ' ( ' + $9 + ' ) )' + ' {\n' + $4 + '} else {\n' + $14 + '};';
         }
