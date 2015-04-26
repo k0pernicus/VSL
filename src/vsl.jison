@@ -56,7 +56,7 @@ LEXICAL GRAMMAR
 
 'do'                                {return 'BLOCK_BEGIN'}
 
-[0-9]+".."[0-9]+                    {return 'ITER_NBR'}
+(^[a-z]([a-zA-Z0-9_?])*|[0-9]+)".."(^[a-z]([a-zA-Z0-9_?])*|[0-9]+)                    {return 'ITER_NBR'}
 
 'in'                                {return 'ITER_IN'}
 'for'                               {return 'ITER_SYMBOLE'}
@@ -89,7 +89,7 @@ LEXICAL GRAMMAR
 
 ^[a-z]([a-zA-Z0-9_?])*              {return 'VAR'}
 
-\".*\"          {return 'STRING'}
+\"[^\"]+\"          {return 'STRING'}
 
 <<EOF>>                             {return 'EOF'}
 
@@ -219,9 +219,9 @@ iter_statement
         }
     |   BLOCK_BEGIN PARENTHESIS_BEGIN INDENT instructions PARENTHESIS_END ITER_SYMBOLE VAR ITER_IN ITER_NBR
         {
-            var iter_nbr = $6;
-            var first_nbr = get_first_nbr($6);
-            var last_nbr = get_last_nbr($6);
+            var iter_nbr = $9;
+            var first_nbr = get_first_nbr($9);
+            var last_nbr = get_last_nbr($9);
             if (first_nbr <= last_nbr) {
                 var iter = "++";
             }
@@ -390,7 +390,7 @@ bool_operation
     ;
 
 stdout
-    :   STDOUT_BEGIN stdout_leaves END_STRING
+    :   STDOUT_BEGIN stdout_leaves
         {
             $$ = 'console.log' + '( ' + $2 + ' )';
         }
