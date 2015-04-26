@@ -62,6 +62,8 @@ This is the list of reserved names:
 *   ```for```,
 *   ```fn```,
 *   ```out```,
+*   ```begin```,
+*   ```end```,
 *   ```..```.
 
 Comments are delimited between ```/*``` and ```*/```. In comments, you **must** write it between double-quotes!  
