@@ -86,6 +86,8 @@ LEXICAL GRAMMAR
 '!='                                {return 'NEQUALS_BOPE'}
 'and'                               {return 'AND_BOPE'}
 'or'                                {return 'OR_BOPE'}
+'true'                              {return 'TRUE_SYMB'}
+'false'                             {return 'FALSE_SYMB'}
 
 [0-9]+                              {return 'DIGITAL'}
 
@@ -535,6 +537,14 @@ leaf
                 else
                     throw "ERROR : " + $1 + " has not been initialized as parameter!";
             }
+        }
+    |   TRUE_SYMB
+        {
+            $$ = 'true';
+        }
+    |   FALSE_SYMB
+        {
+            $$ = 'false';
         }
     ;
 
