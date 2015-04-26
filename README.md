@@ -265,7 +265,7 @@ fn mul a (
     out "mul " a
     init x 0
     do (
-        init rst a * x
+        init rst (a * x)
         out  a " * " x " = " rst
     ) for x in 0..10
 )
@@ -281,19 +281,18 @@ do (
 This example will print out the 100 first Fibonacci decimals.
 
 ```
-fn fibo limit (
-  init x 1
-  init y 1
+fn fibo limit begin
+  init x, y, b 1
 
   out x "\n" y
 
   do (
-    init rst (x + y)
+    set b x
     set x y
-    set y rst
-    out rst
+    set y (y + b)
+    out y
   ) for a in 0..limit
-)
+end
 
 fibo(100)
 ```
