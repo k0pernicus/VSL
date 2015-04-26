@@ -89,6 +89,8 @@ LEXICAL GRAMMAR
 'true'                              {return 'TRUE_SYMB'}
 'false'                             {return 'FALSE_SYMB'}
 
+[0-9]+'.'[0-9]*                     {return 'FLOAT'}
+
 [0-9]+                              {return 'DIGITAL'}
 
 ^[a-z]([a-zA-Z0-9_?])*              {return 'VAR'}
@@ -506,6 +508,10 @@ final_state
 
 leaf
     :   DIGITAL
+        {
+            $$ = $1;
+        }
+    |   FLOAT
         {
             $$ = $1;
         }
