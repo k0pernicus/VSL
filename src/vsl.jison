@@ -47,6 +47,7 @@ LEXICAL GRAMMAR
 '/*'                                {return 'COMMENT_BEGIN'}
 '*/'                                {return 'COMMENT_END'}
 '$'                                 {return 'END_STRING'}
+','                                 {return 'COMMA'}
 
 'init'                              {return 'INIT_SYMBOLE'}
 'set'                               {return 'SET_SYMBOLE'}
@@ -183,21 +184,29 @@ instruction
     ;
 
 affect
-    :   INIT_SYMBOLE VAR ( operations )
+    :   INIT_SYMBOLE affect_var ( operations )
         {
+            list_var = $2;
+            list_var = list_var.split(',');
             if (!is_fn) {
-                if (!symbols_table.hasOwnProperty($2)) {
-                    symbols_table[$2] = $3;
+                for (var i = 0; i < list_var.length; i++) {
+                    var actual_var = list_var[i];
+                    if (!symbols_table.hasOwnProperty(actual_var)) {
+                        symbols_table[actual_var] = $3;
+                    }
+                    else
+                        throw "ERROR: " + actual_var + " has already been initialized!!"
                 }
-                else
-                    throw "ERROR: " + $2 + " has already been initialized!!"
             }
             else {
-                if (!symbols_fn[current_fn]['global_var'].hasOwnProperty($2) && !symbols_fn[current_fn]['parameters'].hasOwnProperty($2)) {
-                    symbols_fn[current_fn]['global_var'][$2] = $3;
+                for (var i = 0; i < list_var.length; i++) {
+                    var actual_var = list_var[i];
+                    if (!symbols_fn[current_fn]['global_var'].hasOwnProperty(actual_var) && !symbols_fn[current_fn]['parameters'].hasOwnProperty(actual_var)) {
+                        symbols_fn[current_fn]['global_var'][actual_var] = $3;
+                    }
+                    else
+                        throw "ERROR: " + actual_var + " has already been initialized in the function!!"
                 }
-                else
-                    throw "ERROR: " + $2 + " has already been initialized in the function!!"
             }
             $$ = 'var ' + $2 + ' = ' + $3;
         }
@@ -290,25 +299,32 @@ function
     ;
 
 modification
-    :   SET_SYMBOLE VAR ( operations )
+    :   SET_SYMBOLE affect_var ( operations )
         {
+            list_var = $2;
+            list_var = list_var.split(',');
             if (!is_fn) {
-                if (symbols_table.hasOwnProperty($2)) {
-                    symbols_table[$2] = $3;
-                    $$ = $2 + ' = ' + $3;
+                for (var i = 0; i < list_var.length; i++) {
+                    var actual_var = list_var[i];
+                    if (symbols_table.hasOwnProperty(actual_var)) {
+                        symbols_table[actual_var] = $3;
+                    }
                 }
             }
             else {
-                if (symbols_fn[current_fn]['global_var'].hasOwnProperty($2)) {
-                    $$ = $2 + ' = ' + $3;
-                }
-                else {
-                    if (symbols_fn[current_fn]['parameters'].hasOwnProperty($2))
-                        throw "ERROR : You canno't modify the parameter " + $2 + " !";
-                    else
-                        throw "ERROR : " + $2 + " has not been initialized...";
+                for (var i = 0; i < list_var.length; i++) {
+                    var actual_var = list_var[i];
+                    if (symbols_fn[current_fn]['global_var'].hasOwnProperty(actual_var))
+                        symbols_fn[current_fn]['global_var'][actual_var] = $3;
+                    else {
+                        if (symbols_fn[current_fn]['parameters'].hasOwnProperty($2))
+                            throw "ERROR : You canno't modify the parameter " + $2 + " !";
+                        else
+                            throw "ERROR : " + $2 + " has not been initialized...";
+                    }
                 }
             }
+            $$ = $2 + ' = ' + $3;
         }
     ;
 
@@ -429,6 +445,17 @@ fn_id
             }
         }
     ;
+
+affect_var
+:   VAR
+    {
+        $$ = $1;
+    }
+|   VAR COMMA ( affect_var )
+    {
+        $$ = $1 + ' = ' + $3;
+    }
+;
 
 var_leaves
     :   VAR
