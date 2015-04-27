@@ -124,7 +124,7 @@ To allocate a list, please to use the ```list``` keyword.
 To re-allocate a variable, please to use the ```set``` keyword.  
 **Ex**: ```set x (2*3)``` will reallocate ```x``` with ```(2*3)```.  
 **Ex2**: ```set x, y (2*3)``` will reallocate ```x``` and ```y``` with ```(2*3)```.  
-**Ex3**: ```set x, y list 1 2 3 4``` will reallocate ```x``` and ```y``` with a list which contains ```1,2,3,4```.
+**Ex3**: ```set x, y list 1..4``` will reallocate ```x``` and ```y``` with a list which contains ```1,2,3,4```.
 
 ####<a name="conditions"></a>Conditions
 
