@@ -40,7 +40,7 @@ Please to install these softwares and libraries:
 
 Please to generate the JavaScript parser (for VSL) : ```jison src/vsl.jison```
 
-After that, put this simple line to your .bashrc : ```alias vsl=node vsl.js```
+After that, put this simple line to your .bashrc : ```alias vsl="node vsl.js"```
 
 To finish, run these commands to run your VSL program:
 ```
@@ -225,7 +225,7 @@ init z 1
     "Declare a simple function"
 */
 
-fn printHelloWorld begin
+fn doNimps begin
     /*
         "z is here a local variable"
     */
@@ -243,7 +243,7 @@ end
 */
 out z
 
-do printHelloWorld() for x in 0..2
+do doNimps() for x in 0..2
 ```
 
 ##<a name="examples"></a>Examples
