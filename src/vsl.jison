@@ -191,7 +191,7 @@ instruction
     ;
 
 affect
-    :   INIT_SYMBOLE affect_var ( operations )
+    :   INIT_SYMBOLE list_var_affect ( operations )
         {
             list_var = $2;
             list_var = list_var.split(' = ');
@@ -422,7 +422,7 @@ function
     ;
 
 modification
-    :   SET_SYMBOLE affect_var ( operations )
+    :   SET_SYMBOLE list_var_affect ( operations )
         {
             list_var = $2;
             list_var = list_var.split(' = ');
@@ -569,12 +569,12 @@ fn_id
         }
     ;
 
-affect_var
+list_var_affect
 :   VAR
     {
         $$ = $1;
     }
-|   VAR COMMA ( affect_var )
+|   VAR COMMA ( list_var_affect )
     {
         $$ = $1 + ' = ' + $3;
     }
@@ -587,7 +587,7 @@ var_leaves
                 throw "ERROR: " + $1 + " has already been declared in the function!"
             }
             else {
-                symbols_fn[current_fn]['parameters'][$1] = false;
+                symbols_fn[current_fn]['parameters'][$1] = $1;
                 $$ = $1;
             }
         }
@@ -597,7 +597,7 @@ var_leaves
                 throw "ERROR: " + $1 + " has already been declared in the function!"
             }
             else {
-                symbols_fn[current_fn]['parameters'][$1] = false;
+                symbols_fn[current_fn]['parameters'][$1] = $1;
                 $$ = $1 + ', ' + $2;
             }
         }
@@ -676,10 +676,46 @@ leaf
 
 function get_first_nbr(nbr) {
     var first_nbr = nbr.split('..')[0];
+    if (isAVar(first_nbr)) {
+        if (!is_fn){
+            if (symbols_table.hasOwnProperty(first_nbr))
+                return symbols_table[first_nbr];
+            else
+                throw "ERROR : " + first_nbr + " has not been initialized yet!";
+        }
+        else {
+            if (symbols_fn[current_fn]['global_var'].hasOwnProperty(first_nbr))
+                return symbols_fn[current_fn]['global_var'][first_nbr];
+            if (symbols_fn[current_fn]['parameters'].hasOwnProperty(first_nbr))
+                return symbols_fn[current_fn]['parameters'][first_nbr];
+            else
+                throw "ERROR : " + first_nbr + " has not been initialized as parameter!";
+        }
+    }
     return first_nbr;
 }
 
 function get_last_nbr(nbr) {
     var last_nbr = nbr.split('..')[1];
+    if (isAVar(last_nbr)) {
+        if (!is_fn){
+            if (symbols_table.hasOwnProperty(last_nbr))
+                return symbols_table[last_nbr];
+            else
+                throw "ERROR : " + last_nbr + " has not been initialized yet!";
+        }
+        else {
+            if (symbols_fn[current_fn]['global_var'].hasOwnProperty(last_nbr))
+                return symbols_fn[current_fn]['global_var'][last_nbr];
+            if (symbols_fn[current_fn]['parameters'].hasOwnProperty(last_nbr))
+                return symbols_fn[current_fn]['parameters'][last_nbr];
+            else
+                throw "ERROR : " + last_nbr + " has not been initialized as parameter!";
+        }
+    }
     return last_nbr;
+}
+
+function isAVar( str ) {
+ return /^[a-zA-Z]+$/.test(str);
 }
