@@ -119,9 +119,9 @@ The right part of the allocation have to be :
 *   a *char*.
 *   a *list*.
 
-To allocate a list, please to use the ```list``` keyword.
-**Ex**: ```init x list``` will declared an empty list.
-**Ex2**: ```init x list 1 2 3 4``` will declared a list which contains ```1,2,3,4```.
+To allocate a list, please to use the ```list``` keyword.  
+**Ex**: ```init x list``` will declared an empty list.  
+**Ex2**: ```init x list 1 2 3 4``` will declared a list which contains ```1,2,3,4```.  
 **Ex3**: ```init x list 0..9``` will declared a list which contains all decimals between ```0``` and ```9``` (exclude).
 
 ####<a name="reallocation"></a>Re-allocation
