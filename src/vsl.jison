@@ -68,6 +68,8 @@ LEXICAL GRAMMAR
 
 'fn'                                {is_fn = true; return 'FUNCTION_SYMBOLE'}
 
+'return'                            {return 'RETURN_SYMB'}
+
 /*
     Operators
 */
@@ -161,11 +163,14 @@ instruction
         {
             $$ = $1 + ';' + '\n';
         }
-    |   iter_statement
+    |   comments
+        {
+        }
+    |   if_statement
         {
             $$ = $1 + '\n';
         }
-    |   if_statement
+    |   iter_statement
         {
             $$ = $1 + '\n';
         }
@@ -181,12 +186,13 @@ instruction
         {
             $$ = $1 + ';' + '\n';
         }
-    |   stdout
+    |   return_statement
         {
             $$ = $1 + ';' + '\n';
         }
-    |   comments
+    |   stdout
         {
+            $$ = $1 + ';' + '\n';
         }
     ;
 
@@ -626,6 +632,13 @@ bool_operation
     |   operations NEQUALS_BOPE ( operations )
         {
             $$ = $1 + ' != ' + $3;
+        }
+    ;
+
+return_statement
+    :   RETURN_SYMB operations
+        {
+            $$ = 'return ' + $2;
         }
     ;
 
