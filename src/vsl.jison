@@ -432,6 +432,8 @@ modification
                     if (symbols_table.hasOwnProperty(actual_var)) {
                         symbols_table[actual_var] = $3;
                     }
+                    else
+                        throw "ERROR : " + actual_var + " has not been initialized...";
                 }
             }
             else {
@@ -441,9 +443,9 @@ modification
                         symbols_fn[current_fn]['global_var'][actual_var] = $3;
                     else {
                         if (symbols_fn[current_fn]['parameters'].hasOwnProperty($2))
-                            throw "ERROR : You canno't modify the parameter " + $2 + " !";
+                            throw "ERROR : You canno't modify the parameter " + actual_var + " !";
                         else
-                            throw "ERROR : " + $2 + " has not been initialized...";
+                            throw "ERROR : " + actual_var + " has not been initialized...";
                     }
                 }
             }
@@ -459,6 +461,8 @@ modification
                     if (symbols_table.hasOwnProperty(actual_var)) {
                         symbols_table[actual_var] = [];
                     }
+                    else
+                        throw "ERROR : " + actual_var + " has not been initialized...";
                 }
             }
             else {
@@ -468,9 +472,9 @@ modification
                         symbols_fn[current_fn]['global_var'][actual_var] = [];
                     else {
                         if (symbols_fn[current_fn]['parameters'].hasOwnProperty($2))
-                            throw "ERROR : You canno't modify the parameter " + $2 + " !";
+                            throw "ERROR : You canno't modify the parameter " + actual_var + " !";
                         else
-                            throw "ERROR : " + $2 + " has not been initialized...";
+                            throw "ERROR : " + actual_var + " has not been initialized...";
                     }
                 }
             }
@@ -486,6 +490,8 @@ modification
                     if (symbols_table.hasOwnProperty(actual_var)) {
                         symbols_table[actual_var] = [$4];
                     }
+                    else
+                        throw "ERROR : " + actual_var + " has not been initialized...";
                 }
             }
             else {
