@@ -58,6 +58,8 @@ LEXICAL GRAMMAR
 
 'do'                                {return 'DO_SYMB'}
 
+'list'                              {return 'LIST_SYMB'}
+
 ([a-z]([a-zA-Z0-9_?])*|[0-9]+)".."([a-z]([a-zA-Z0-9_?])*|[0-9]+)                    {return 'ITER_NBR'}
 
 'in'                                {return 'ITER_IN'}
@@ -214,6 +216,122 @@ affect
                 }
             }
             $$ = 'var ' + $2 + ' = ' + $3;
+        }
+    |   INIT_SYMBOLE list_var_affect
+        {
+            list_var = $2;
+            list_var = list_var.split(' = ');
+            if (!is_fn) {
+                for (var i = 0; i < list_var.length; i++) {
+                    var actual_var = list_var[i];
+                    if (!symbols_table.hasOwnProperty(actual_var)) {
+                        symbols_table[actual_var] = 0;
+                    }
+                    else
+                        throw "ERROR: " + actual_var + " has already been initialized!!"
+                }
+            }
+            else {
+                for (var i = 0; i < list_var.length; i++) {
+                    var actual_var = list_var[i];
+                    if (!symbols_fn[current_fn]['global_var'].hasOwnProperty(actual_var) && !symbols_fn[current_fn]['parameters'].hasOwnProperty(actual_var)) {
+                        symbols_fn[current_fn]['global_var'][actual_var] = 0;
+                    }
+                    else
+                        throw "ERROR: " + actual_var + " has already been initialized in the function!!"
+                }
+            }
+            $$ = 'var ' + $2;
+        }
+    |   INIT_SYMBOLE list_var_affect LIST_SYMB ITER_NBR
+        {
+            list_var = $2;
+            list_var = list_var.split(' = ');
+            var iter_nbr = $4;
+            var first_nbr = get_first_nbr($4);
+            var last_nbr = get_last_nbr($4);
+            var tab_nbr = [];
+            if (first_nbr <= last_nbr) {
+                for (var i = first_nbr; i < last_nbr; i++)
+                    tab_nbr.push(i);
+            }
+            else {
+                for (var i = last_nbr; i > first_nbr; i--)
+                    tab_nbr.push(i);
+            }
+            if (!is_fn) {
+                for (var i = 0; i < list_var.length; i++) {
+                    var actual_var = list_var[i];
+                    if (!symbols_table.hasOwnProperty(actual_var)) {
+                        symbols_table[actual_var] = tab_nbr;
+                    }
+                    else
+                        throw "ERROR: " + actual_var + " has already been initialized!!"
+                }
+            }
+            else {
+                for (var i = 0; i < list_var.length; i++) {
+                    var actual_var = list_var[i];
+                    if (!symbols_fn[current_fn]['global_var'].hasOwnProperty(actual_var) && !symbols_fn[current_fn]['parameters'].hasOwnProperty(actual_var)) {
+                        symbols_fn[current_fn]['global_var'][actual_var] = tab_nbr;
+                    }
+                    else
+                        throw "ERROR: " + actual_var + " has already been initialized in the function!!"
+                }
+            }
+            $$ = 'var ' + $2 + ' = [' + tab_nbr + ']';
+        }
+    |   INIT_SYMBOLE list_var_affect LIST_SYMB ( operations )
+        {
+            list_var = $2;
+            list_var = list_var.split(' = ');
+            if (!is_fn) {
+                for (var i = 0; i < list_var.length; i++) {
+                    var actual_var = list_var[i];
+                    if (!symbols_table.hasOwnProperty(actual_var)) {
+                        symbols_table[actual_var] = [$4];
+                    }
+                    else
+                        throw "ERROR: " + actual_var + " has already been initialized!!"
+                }
+            }
+            else {
+                for (var i = 0; i < list_var.length; i++) {
+                    var actual_var = list_var[i];
+                    if (!symbols_fn[current_fn]['global_var'].hasOwnProperty(actual_var) && !symbols_fn[current_fn]['parameters'].hasOwnProperty(actual_var)) {
+                        symbols_fn[current_fn]['global_var'][actual_var] = [$4];
+                    }
+                    else
+                        throw "ERROR: " + actual_var + " has already been initialized in the function!!"
+                }
+            }
+            $$ = 'var ' + $2 + ' = ' + '['+$4+']';
+        }
+    |   INIT_SYMBOLE list_var_affect LIST_SYMB
+        {
+            list_var = $2;
+            list_var = list_var.split(' = ');
+            if (!is_fn) {
+                for (var i = 0; i < list_var.length; i++) {
+                    var actual_var = list_var[i];
+                    if (!symbols_table.hasOwnProperty(actual_var)) {
+                        symbols_table[actual_var] = [];
+                    }
+                    else
+                        throw "ERROR: " + actual_var + " has already been initialized!!"
+                }
+            }
+            else {
+                for (var i = 0; i < list_var.length; i++) {
+                    var actual_var = list_var[i];
+                    if (!symbols_fn[current_fn]['global_var'].hasOwnProperty(actual_var) && !symbols_fn[current_fn]['parameters'].hasOwnProperty(actual_var)) {
+                        symbols_fn[current_fn]['global_var'][actual_var] = [];
+                    }
+                    else
+                        throw "ERROR: " + actual_var + " has already been initialized in the function!!"
+                }
+            }
+            $$ = 'var ' + $2 + ' = ' + '[]';
         }
     ;
 
