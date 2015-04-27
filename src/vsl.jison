@@ -501,13 +501,54 @@ modification
                         symbols_fn[current_fn]['global_var'][actual_var] = [$4];
                     else {
                         if (symbols_fn[current_fn]['parameters'].hasOwnProperty($2))
-                            throw "ERROR : You canno't modify the parameter " + $2 + " !";
+                            throw "ERROR : You canno't modify the parameter " + actual_var + " !";
                         else
-                            throw "ERROR : " + $2 + " has not been initialized...";
+                            throw "ERROR : " + actual_var + " has not been initialized...";
                     }
                 }
             }
             $$ = $2 + ' = ' + '['+$4+']';
+        }
+    |   SET_SYMBOLE list_var_affect LIST_SYMB ITER_NBR
+        {
+            list_var = $2;
+            list_var = list_var.split(' = ');
+            var iter_nbr = $4;
+            var first_nbr = get_first_nbr($4);
+            var last_nbr = get_last_nbr($4);
+            var tab_nbr = [];
+            if (first_nbr <= last_nbr) {
+                for (var i = first_nbr; i < last_nbr; i++)
+                    tab_nbr.push(i);
+            }
+            else {
+                for (var i = last_nbr; i > first_nbr; i--)
+                    tab_nbr.push(i);
+            }
+            if (!is_fn) {
+                for (var i = 0; i < list_var.length; i++) {
+                    var actual_var = list_var[i];
+                    if (symbols_table.hasOwnProperty(actual_var)) {
+                        symbols_table[actual_var] = tab_nbr;
+                    }
+                    else
+                        throw "ERROR : " + actual_var + " has not been initialized...";
+                }
+            }
+            else {
+                for (var i = 0; i < list_var.length; i++) {
+                    var actual_var = list_var[i];
+                    if (symbols_fn[current_fn]['global_var'].hasOwnProperty(actual_var))
+                        symbols_fn[current_fn]['global_var'][actual_var] = tab_nbr;
+                    else {
+                        if (symbols_fn[current_fn]['parameters'].hasOwnProperty(actual_var))
+                            throw "ERROR : You canno't modify the parameter " + actual_var + " !";
+                        else
+                            throw "ERROR : " + actual_var + " has not been initialized...";
+                    }
+                }
+            }
+            $$ = $2 + ' = ' + '['+tab_nbr+']';
         }
     ;
 
