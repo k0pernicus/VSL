@@ -32,17 +32,19 @@ VSL requires nodeJS to work.
 
 ##<a name="installation"></a>Installation
 
-Run this command as sudo/root (root directory):
-```
-    chmod +x install.sh
-    [sudo] ./install.sh
-```
+Please to install these softwares and libraries:
+*   nodeJS (please to see how at [http://nodejs.org](http://nodejs.org))
+*   jison (with npm : ```npm install jison -g```)
 
 ##<a name="utilisation"></a>Utilisation
 
-Run these commands to run your VSL program:
+Please to generate the JavaScript parser (for VSL) : ```jison src/vsl.jison```
+
+After that, put this simple line to your .bashrc : ```alias vsl=node vsl.js```
+
+To finish, run these commands to run your VSL program:
 ```
-    VSL your_file.VSL
+    vsl your_file.vsl
     node your_file
 ```
 
@@ -55,24 +57,27 @@ Secondly, indentation is very important to respect some obligations with loops o
 VSL distringuished *allocation* and *modification* of variables.
 
 This is the list of reserved names:
-*   ```ìf```,
-*   ```init```,
-*   ```else```,
+*   ```begin```,
 *   ```do```,
+*   ```else```,
+*   ```end```,
+*   ```false```,
 *   ```for```,
 *   ```fn```,
+*   ```ìf```,
+*   ```in```,
+*   ```init```,
+*   ```list```,
 *   ```out```,
-*   ```begin```,
-*   ```end```,
+*   ```return```,
 *   ```true```,
-*   ```false```,
 *   ```..```.
 
-Comments are delimited between ```/*``` and ```*/```. In comments, you **must** write it between double-quotes!  
+Comments are delimited between ```/*``` and ```*/```. For comments, you **must** write them between double-quotes!  
 
 To print out a simple string, use ```out``` like ```out "x: " x```
 
-To finish, priority is given by ```(...)```; blocks are created by ```(``` and ```)```, or **```begin``` and ```end``` for functions only**.
+Priority (for operations) is given by ```(...)```. Blocks are created by ```(``` and ```)```, or **```begin``` and ```end``` for functions only**.
 
 ####<a name="operators"></a>Operators
 
@@ -142,7 +147,6 @@ You can use these notations to use simple conditions :
     ```
     init x 3
     do (
-        out "hi guy!"
         out "x < 4"
     ) if (x < 4)
     ```
@@ -152,7 +156,6 @@ You can use these notations to use simple conditions :
     ```
     init x 3
     do (
-        out "hi guy!"
         out "x < 4"
     ) if (x < 4) else (
         out "x > 4"
@@ -161,7 +164,6 @@ You can use these notations to use simple conditions :
 
 ####<a name="loops"></a>Loop
 
-**WARNING: Loops are currently in alpha-test!!!**  
 There is a single loop in VSL.
 
 ```
@@ -197,7 +199,6 @@ do add(x x) for x in 0..z
 
 ####<a name="functions"></a>Functions
 
-**WARNING: Functions are currently in alpha-test!!!**  
 You can use simple functions without parameters, or with unlimited parameters...
 
 ```
@@ -210,7 +211,7 @@ or
 
 ```
 fn add y z begin
-    out (y + z)
+    return (y + z)
 end
 ```
 
@@ -244,8 +245,6 @@ out z
 
 do printHelloWorld() for x in 0..2
 ```
-
-There is no ```return``` instruction yet (soon!).
 
 ##<a name="examples"></a>Examples
 
