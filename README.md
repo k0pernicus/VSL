@@ -192,6 +192,9 @@ end
 
 init z 2
 
+/*
+    "You have to declare the next variable unfortunately... I work on it to improve that thing!"
+*/
 init x 0
 
 do add(x x) for x in 0..z
