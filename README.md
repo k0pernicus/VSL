@@ -213,6 +213,12 @@ or
 fn add y z begin
     return (y + z)
 end
+
+add 3 2
+
+/*
+    "Result is 5"
+*/
 ```
 
 Usage:  
