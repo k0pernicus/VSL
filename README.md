@@ -26,7 +26,7 @@ Fork me, I'm (not yet) famous!
 
 ##<a name="simple_intro"></a>What? How? Who? Where? When?
 
-VSL has been conceived to simplify a lot scripting programs to make simple and heavy calculations.  
+VSL has been conceived to simplify a lot scripting programs to make simple calculations.  
 VSL uses Jison as front-end, a back-end to JS and the V8 engine (from Google) with nodeJS.  
 VSL requires nodeJS to work.
 
